@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wantora — Твій вішліст</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f0f4ff, #ffffff);
+        color: #111;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      .glow-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .glow-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.4;
+        animation: floatGlow 20s ease-in-out infinite alternate;
+      }
+
+      .glow1 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, #5f36d2, transparent);
+        top: -100px;
+        left: -100px;
+        animation-delay: 0s;
+      }
+
+      .glow2 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, #2298f2, transparent);
+        bottom: -100px;
+        right: -100px;
+        animation-delay: 5s;
+      }
+
+      @keyframes floatGlow {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(60px, 80px);
+        }
+      }
+
+      /* 🎯 УНІФІКОВАНА ШАПКА */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 24px;
+        font-weight: 600;
+        color: #5f36d2;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #5f36d2, #2298f2);
+        border-radius: 50%;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .header-btn {
+        background-color: #f0f0ff;
+        color: #5f36d2;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .header-btn:hover {
+        background-color: #dcd6ff;
+      }
+
+      /* 🧱 Контейнер */
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 80px 20px;
+        gap: 60px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        max-width: 1200px;
+      }
+
+      .text-section {
+        flex: 1;
+        min-width: 300px;
+        max-width: 550px;
+        text-align: center;
+      }
+
+      .text-section h1 {
+        font-size: 48px;
+        margin-bottom: 24px;
+        color: #333;
+      }
+
+      .text-section h1 span {
+        color: #5f36d2;
+      }
+
+      .text-section p {
+        font-size: 20px;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 32px;
+      }
+
+      .slogan {
+        font-size: 17px;
+        font-style: italic;
+        color: #777;
+        margin-top: 40px;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .buttons .primary {
+        background: #5f36d2;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .buttons .primary:hover {
+        background: #472bb0;
+      }
+
+      .image-box {
+        flex: 1;
+        min-width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .image-box img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 20px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-section {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        max-width: 960px;
+        margin: 0 auto;
+        flex-wrap: nowrap;
+      }
+
+      .feature {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 30px 24px;
+        flex: 1;
+        min-width: 200px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .feature:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature h3 {
+        color: #5f36d2;
+        margin-bottom: 12px;
+      }
+
+      .feature p {
+        color: #444;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 768px) {
+        .hero-section {
+          flex-direction: column;
+        }
+
+        .image-box {
+          margin-top: 40px;
+        }
+
+        .feature-section {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🌟 Світловий фон -->
+    <div class="glow-background">
+      <div class="glow-circle glow1"></div>
+      <div class="glow-circle glow2"></div>
+    </div>
+
+    <!-- 🔝 Уніфікована шапка -->
+    <header>
+      <a href="/wantoraMain" class="logo">
+        <div class="logo-icon"></div>Wantora
+      </a>
+      <div class="header-actions">
+        <a th:if="${!isAuthenticated}" href="/login" class="header-btn">Увійти</a>
+
+        <a th:if="${isAuthenticated}" href="/profile" class="header-btn">
+          <img src="/images/profile-icon.png" alt="Профіль" style="width:28px;height:28px;border-radius:50%;">
+        </a>
+      </div>
+
+    </header>
+
+    <div class="container">
+      <div class="hero-section">
+        <div class="text-section">
+          <h1>Створи вішліст <span>своїх мрій</span></h1>
+          <p>
+            Більше не потрібно натякати — просто поділись списком своїх бажань.
+            Плануй подарунки та сюрпризи разом із Wantora!
+          </p>
+          <div class="buttons">
+            <button class="primary">Створити вішліст</button>
+          </div>
+          <div class="slogan">Твій список. Твої мрії. Твоя реальність.</div>
+        </div>
+
+        <div class="image-box">
+          <img src="/images/Work.png" alt="Вішліст 1" />
+          <img src="/images/Work1.png" alt="Вішліст 2" />
+        </div>
+      </div>
+
+      <div class="feature-section">
+        <div class="feature">
+          <h3>Простота</h3>
+          <p>
+            Додавай побажання в пару кліків. Інтерфейс інтуїтивно зрозумілий
+            навіть для новачків.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Спільність</h3>
+          <p>
+            Запрошуй друзів до свого списку або переглядай їхній. Ідеальний
+            варіант для свят!
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Індивідуальність</h3>
+          <p>
+            Кастомізуй вішліст під свій стиль — від кольорів до категорій і
+            нотаток.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

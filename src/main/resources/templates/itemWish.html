@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wantora — Вішлист</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #f0f4ff, #ffffff);
+        color: #111;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 40px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #5f36d2;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        background: linear-gradient(135deg, #5f36d2, #2298f2);
+        border-radius: 50%;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .wishlist-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+      }
+
+      .wishlist-title {
+        font-size: 32px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .wishlist-date {
+        font-size: 16px;
+        color: #666;
+      }
+
+      .card-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        position: relative;
+      }
+
+      .card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 12px;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        color: #5f36d2;
+      }
+
+      .card a {
+        color: #2298f2;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .btns {
+        margin-top: 40px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        background: #5f36d2;
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #f0f0ff;
+        color: #5f36d2;
+      }
+
+      form {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      input,
+      textarea {
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon"></div>
+        Wantora
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="wishlist-header">
+        <div>
+          <div class="wishlist-title">Мій День народження</div>
+          <div class="wishlist-date">До 15 травня 2025</div>
+        </div>
+        <button class="btn btn-secondary" onclick="shareWishlist()">
+          Поділитися
+        </button>
+      </div>
+
+      <div class="card-list" id="wishlistItems">
+        <!-- Додані побажання -->
+      </div>
+
+      <form onsubmit="addWish(event)">
+        <h3>Додати побажання</h3>
+        <input
+          type="text"
+          id="wish-title"
+          placeholder="Назва побажання"
+          required
+        />
+        <textarea
+          id="wish-description"
+          placeholder="Опис (необов’язково)"
+        ></textarea>
+        <input
+          type="url"
+          id="wish-link"
+          placeholder="Посилання (необов’язково)"
+        />
+        <input
+          type="url"
+          id="wish-image"
+          placeholder="URL зображення (необов’язково)"
+        />
+        <button type="submit" class="btn btn-primary">Додати</button>
+      </form>
+    </div>
+
+    <script>
+      const wishlist = [];
+
+      function addWish(event) {
+        event.preventDefault();
+        const title = document.getElementById("wish-title").value;
+        const description = document.getElementById("wish-description").value;
+        const link = document.getElementById("wish-link").value;
+        const image = document.getElementById("wish-image").value;
+
+        const newWish = { title, description, link, image };
+        wishlist.push(newWish);
+        renderWishes();
+        event.target.reset();
+      }
+
+      function renderWishes() {
+        const list = document.getElementById("wishlistItems");
+        list.innerHTML = "";
+        wishlist.forEach((wish, index) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+          ${wish.image ? `<img src="${wish.image}" alt="Wish Image">` : ""}
+          <h3>${wish.title}</h3>
+          ${
+            wish.link
+              ? `<a href="${wish.link}" target="_blank">Переглянути</a>`
+              : ""
+          }
+          <br/><button onclick="markDone(${index})" class="btn btn-secondary" style="margin-top: 10px;">Виконано</button>
+        `;
+          list.appendChild(card);
+        });
+      }
+
+      function markDone(index) {
+        wishlist[index].title += " ✅";
+        renderWishes();
+      }
+
+      function shareWishlist() {
+        const shareUrl = window.location.href;
+        navigator.clipboard.writeText(shareUrl);
+        alert("Посилання на вішлист скопійовано!");
+      }
+    </script>
+  </body>
+</html>

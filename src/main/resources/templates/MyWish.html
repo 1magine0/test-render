@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мої вішлісти — Wantora</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f0f4ff, #ffffff);
+        color: #111;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #5f36d2;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #5f36d2, #2298f2);
+        border-radius: 50%;
+      }
+
+      .account-btn {
+        background-color: #f0f0ff;
+        color: #5f36d2;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      main {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #5f36d2;
+      }
+
+      .filters {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 30px;
+      }
+
+      .filters button {
+        padding: 8px 16px;
+        background: #f0f0ff;
+        color: #5f36d2;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .filters button.active {
+        background: #5f36d2;
+        color: white;
+      }
+
+      .wishlist {
+        background: white;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .wishlist-title {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .wishlist-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .wishlist-buttons button {
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .edit-btn {
+        background: #e0dbff;
+        color: #5f36d2;
+      }
+
+      .delete-btn {
+        background: #ffd3d3;
+        color: #d03434;
+      }
+
+      .create-btn {
+        background: #5f36d2;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-top: 30px;
+      }
+
+      .create-btn:hover {
+        background: #472bb0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon"></div>
+        Wantora
+      </div>
+      <button class="account-btn" onclick="goToAccount()">Акаунт</button>
+    </header>
+
+    <main>
+      <h1>Мої вішлісти</h1>
+
+      <div class="filters">
+        <button class="active" onclick="filterWishlists('active')">
+          Активні
+        </button>
+        <button onclick="filterWishlists('completed')">Виконані</button>
+        <button onclick="filterWishlists('archived')">Архів</button>
+      </div>
+
+      <div id="wishlistContainer"></div>
+
+      <button class="create-btn" onclick="createNewWishlist()">
+        + Створити новий
+      </button>
+    </main>
+
+    <script>
+      const wishlists = [
+        { id: 1, title: "День народження", status: "active" },
+        { id: 2, title: "Подарунки на Новий Рік", status: "completed" },
+        { id: 3, title: "Архівний список", status: "archived" },
+        { id: 4, title: "Хочу на літо", status: "active" },
+      ];
+
+      let currentFilter = "active";
+
+      function filterWishlists(status) {
+        currentFilter = status;
+        document
+          .querySelectorAll(".filters button")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        renderWishlists();
+      }
+
+      function renderWishlists() {
+        const container = document.getElementById("wishlistContainer");
+        container.innerHTML = "";
+
+        const filtered = wishlists.filter((w) => w.status === currentFilter);
+        if (filtered.length === 0) {
+          container.innerHTML = "<p>Список порожній.</p>";
+          return;
+        }
+
+        filtered.forEach((w) => {
+          const div = document.createElement("div");
+          div.className = "wishlist";
+          div.innerHTML = `
+          <div class="wishlist-title">${w.title}</div>
+          <div class="wishlist-buttons">
+            <button class="edit-btn" onclick="editWishlist(${w.id})">Редагувати</button>
+            <button class="delete-btn" onclick="deleteWishlist(${w.id})">Видалити</button>
+          </div>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      function createNewWishlist() {
+        const title = prompt("Введи назву нового вішліста:");
+        if (title) {
+          const newId = Date.now();
+          wishlists.push({ id: newId, title, status: "active" });
+          filterWishlists("active");
+        }
+      }
+
+      function editWishlist(id) {
+        const wl = wishlists.find((w) => w.id === id);
+        const newTitle = prompt("Редагувати назву:", wl.title);
+        if (newTitle) {
+          wl.title = newTitle;
+          renderWishlists();
+        }
+      }
+
+      function deleteWishlist(id) {
+        if (confirm("Справді видалити цей вішліст?")) {
+          const index = wishlists.findIndex((w) => w.id === id);
+          if (index > -1) {
+            wishlists.splice(index, 1);
+            renderWishlists();
+          }
+        }
+      }
+
+      function goToAccount() {
+        window.location.href =
+          "/Users/georgij/Downloads/Wantora_Fixed_All/profile.html"; // змінити на актуальний URL
+      }
+
+      window.onload = renderWishlists;
+    </script>
+  </body>
+</html>

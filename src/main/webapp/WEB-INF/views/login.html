@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wantora — Вхід</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: #f3f3f3;
+        overflow-x: hidden;
+        color: #111;
+      }
+
+      /* ШАПКА */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 40px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #5f36d2;
+      }
+
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #5f36d2, #2298f2);
+        border-radius: 50%;
+      }
+
+      .hero-block {
+        position: relative;
+        height: calc(100vh - 90px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .gradient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0b3d91, #3fa9f5, #ffffff);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        z-index: 0;
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      #tsparticles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .wrapper {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 400px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 48px 32px;
+        border-radius: 20px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: fadeIn 1s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        font-size: 26px;
+        color: #5f36d2;
+        margin-bottom: 16px;
+      }
+
+      .description {
+        font-size: 15px;
+        color: #333;
+        margin-bottom: 28px;
+      }
+
+      .description span {
+        display: block;
+        margin-top: 8px;
+        font-weight: 500;
+      }
+
+      .description span a {
+        text-decoration: none;
+        margin: 0 4px;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      .description span a:nth-child(1) {
+        color: #5f36d2;
+      }
+
+      .description span a:nth-child(2) {
+        color: #2298f2;
+      }
+
+      .description span a:nth-child(3) {
+        color: #cc3399;
+      }
+
+      .form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0b3d91;
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px 16px 12px 40px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #fafafa no-repeat 12px center;
+        transition: 0.3s;
+      }
+
+      input[type="text"] {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23aaa" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+      }
+
+      input[type="password"] {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23aaa" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-7h-1V7a5 5 0 0 0-10 0v3H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zm-8-3a3 3 0 0 1 6 0v3H10V7z"/></svg>');
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #5f36d2;
+        box-shadow: 0 0 0 3px rgba(95, 54, 210, 0.2);
+      }
+
+      .error {
+        color: #d20;
+        font-size: 14px;
+        margin-bottom: 12px;
+        display: none;
+      }
+
+      .btn {
+        width: 100%;
+        background-color: #5f36d2;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #472bb0;
+        transform: translateY(-2px);
+      }
+
+      .bottom-text {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .bottom-text a {
+        color: #5f36d2;
+        text-decoration: none;
+      }
+
+      .bottom-text a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon"></div>
+        Wantora
+      </div>
+    </header>
+
+    <div class="hero-block">
+      <div class="gradient-bg"></div>
+      <div id="tsparticles"></div>
+
+      <div class="wrapper">
+        <h1>Ласкаво просимо до Wantora!</h1>
+        <p class="description">
+          Wantora — твій персональний список бажань 🎁
+          <span>
+            <a href="#">Створюй</a>, <a href="#">ділись</a> і
+            <a href="#">отримуй бажане</a>
+          </span>
+        </p>
+
+        <form id="loginForm">
+          <h2 class="form-title">Вхід в акаунт</h2>
+          <input type="text" id="login" placeholder="Логін" />
+          <input type="password" id="password" placeholder="Пароль" />
+          <div id="errorMessage" class="error">
+            Хибний логін або пароль, спробуй ще раз
+          </div>
+          <button class="btn" type="submit">Увійти</button>
+        </form>
+
+        <div class="bottom-text">
+          Ще не маєш акаунта? <a href="#">Зареєструватися</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      tsParticles.load("tsparticles", {
+        fpsLimit: 60,
+        interactivity: {
+          events: { onHover: { enable: true, mode: "repulse" } },
+          modes: { repulse: { distance: 100 } },
+        },
+        particles: {
+          color: { value: "#ffffff" },
+          links: { enable: true, color: "#ffffff", distance: 150 },
+          move: { enable: true, speed: 1 },
+          number: { value: 60 },
+          size: { value: { min: 1, max: 3 } },
+        },
+      });
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const login = document.getElementById("login").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const error = document.getElementById("errorMessage");
+
+          if (login !== "admin" || password !== "1234") {
+            error.style.display = "block";
+          } else {
+            error.style.display = "none";
+            alert("Вхід успішний ✅");
+          }
+        });
+    </script>
+  </body>
+</html>
